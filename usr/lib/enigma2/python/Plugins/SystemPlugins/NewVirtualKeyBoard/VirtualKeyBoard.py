@@ -281,9 +281,9 @@ class KBLayoutLanguages:
             lang = lang[1].split("_")[0]
         except:
             lang = 'noflag'
-        flag = '/usr/share/enigma2/NewVirtualKeyBoard/flags/' + lang + '.png'
+        flag = '/usr/share/enigma2/countries/' + lang + '.png'
         if not pathExists(flag):
-           flag = '/usr/share/enigma2/NewVirtualKeyBoard/flags/' +'noflag.png'
+           flag = '/usr/share/enigma2/countries/' +'noflag.png'
         return flag
 
 class LanguageListScreen(Screen,KBLayoutLanguages):
