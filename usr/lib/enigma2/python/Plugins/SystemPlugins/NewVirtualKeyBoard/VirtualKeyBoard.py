@@ -19,6 +19,7 @@ from Components.Input import Input
 from Components.Pixmap import Pixmap
 from Tools.LoadPixmap import LoadPixmap
 from skin import loadSkin
+from Tools.Directories import resolveFilename, SCOPE_PLUGINS, SCOPE_LIBDIR
 
 config.NewVirtualKeyBoard = ConfigSubsection()
 config.NewVirtualKeyBoard.keys_layout = ConfigText(default='', fixed_size=False)
@@ -1523,31 +1524,31 @@ class nvKeyboardSetup(ConfigListScreen, Screen):
     if swidth==1920:
        skin='''
 <screen name="nvKeyboardSetu" position="center,center" size="1080,540" backgroundColor="#16000000" title="New Virtual Keyboard  Settings">
-<ePixmap position="118,482" size="38,38" pixmap="/usr/lib/enigma2/python/Plugins/SystemPlugins/NewVirtualKeyBoard/images/red.png" zPosition="3" transparent="1" alphatest="blend" />
-<ePixmap position="424,482" size="38,38" pixmap="/usr/lib/enigma2/python/Plugins/SystemPlugins/NewVirtualKeyBoard/images/green.png" zPosition="3" transparent="1" alphatest="blend" />
-<ePixmap position="724,482" size="38,38" pixmap="/usr/lib/enigma2/python/Plugins/SystemPlugins/NewVirtualKeyBoard/images/blue.png" zPosition="3" transparent="1" alphatest="blend" />
+<ePixmap position="118,482" size="38,38" pixmap="%s/SystemPlugins/NewVirtualKeyBoard/images/red.png" zPosition="3" transparent="1" alphatest="blend" />
+<ePixmap position="424,482" size="38,38" pixmap="%s/SystemPlugins/NewVirtualKeyBoard/images/green.png" zPosition="3" transparent="1" alphatest="blend" />
+<ePixmap position="724,482" size="38,38" pixmap="%s/SystemPlugins/NewVirtualKeyBoard/images/blue.png" zPosition="3" transparent="1" alphatest="blend" />
 <eLabel position="60,468" zPosition="4" size="300,36" halign="center" font="Regular;33" transparent="1" foregroundColor="#ffffff" backgroundColor="#41000000" text="Cancel" />
 <eLabel position="368,468" zPosition="4" size="300,36" halign="center" font="Regular;33" transparent="1" foregroundColor="#ffffff" backgroundColor="#41000000" text="Save" />
 <eLabel position="735,468" zPosition="4" size="300,36" halign="center" font="Regular;30" transparent="1" foregroundColor="#ffffff" backgroundColor="#41000000" text="Virtual keyboard " />
 <widget name="config" position="30,75" size="1050,480" itemHeight="45" font="Regular;36" scrollbarMode="showOnDemand" transparent="1" zPosition="2" />
-</screen>'''
+</screen>''' % resolveFilename(SCOPE_PLUGINS)
     else:
        skin='''
 <screen name="nvKeyboardSetu" position="center,center" size="719,360" backgroundColor="#16000000" title="New Virtual Keyboard  Settings">
-<ePixmap position="79,321" size="25,25" pixmap="/usr/lib/enigma2/python/Plugins/SystemPlugins/NewVirtualKeyBoard/images/red.png" zPosition="3" transparent="1" alphatest="blend" />
-<ePixmap position="282,321" size="25,25" pixmap="/usr/lib/enigma2/python/Plugins/SystemPlugins/NewVirtualKeyBoard/images/green.png" zPosition="3" transparent="1" alphatest="blend" />
-<ePixmap position="482,321" size="25,25" pixmap="/usr/lib/enigma2/python/Plugins/SystemPlugins/NewVirtualKeyBoard/images/blue.png" zPosition="3" transparent="1" alphatest="blend" />
+<ePixmap position="79,321" size="25,25" pixmap="%s/SystemPlugins/NewVirtualKeyBoard/images/red.png" zPosition="3" transparent="1" alphatest="blend" />
+<ePixmap position="282,321" size="25,25" pixmap="%s/SystemPlugins/NewVirtualKeyBoard/images/green.png" zPosition="3" transparent="1" alphatest="blend" />
+<ePixmap position="482,321" size="25,25" pixmap="%s/SystemPlugins/NewVirtualKeyBoard/images/blue.png" zPosition="3" transparent="1" alphatest="blend" />
 <eLabel position="40,322" zPosition="4" size="200,24" halign="center" font="Regular;22" transparent="1" foregroundColor="#ffffff" backgroundColor="#41000000" text="Cancel" />
 <eLabel position="245,322" zPosition="4" size="200,24" halign="center" font="Regular;22" transparent="1" foregroundColor="#ffffff" backgroundColor="#41000000" text="Save" />
 <eLabel position="490,322" zPosition="4" size="200,24" halign="center" font="Regular;20" transparent="1" foregroundColor="#ffffff" backgroundColor="#41000000" text="Virtual keyboard " />
 <widget name="config" position="20,50" size="699,320" scrollbarMode="showOnDemand" transparent="1" zPosition="2" />
-</screen>'''
+</screen>''' % resolveFilename(SCOPE_PLUGINS)
 
     def __init__(self, session,fromkeyboard=False):
         Screen.__init__(self, session)
         self.list = []
         self.list = []
-        pyo_link="/usr/lib/enigma2/python/Screens/VirtualKeyBoard.pyo"
+        pyo_link = resolveFilename(SCOPE_LIBDIR, "enigma2/python/Screens/VirtualKeyBoard.pyo")
         if not os.path.islink(pyo_link):
            config.NewVirtualKeyBoard.textinput.value="VirtualKeyBoard"
            config.NewVirtualKeyBoard.textinput.save()
@@ -1585,12 +1586,12 @@ class nvKeyboardSetup(ConfigListScreen, Screen):
         for x in self['config'].list:
             x[1].save()
         configfile.save()
-        pyo_link="/usr/lib/enigma2/python/Screens/VirtualKeyBoard.pyo"
-        py_image="/usr/lib/enigma2/python/Screens/VirtualKeyBoard.py"
-        py_backup="/usr/lib/enigma2/python/Screens/VirtualKeyBoard_backup.py"
-        pyo_image="/usr/lib/enigma2/python/Screens/VirtualKeyBoard.pyo"
-        pyo_backup="/usr/lib/enigma2/python/Screens/VirtualKeyBoard_backup.pyo"
-        pyo_NewVirtualKeyBoard="/usr/lib/enigma2/python/Plugins/SystemPlugins/NewVirtualKeyBoard/VirtualKeyBoard.pyo"
+        pyo_link = resolveFilename(SCOPE_LIBDIR, "enigma2/python/Screens/VirtualKeyBoard.pyo")
+        py_image = resolveFilename(SCOPE_LIBDIR, "enigma2/python/Screens/VirtualKeyBoard.py")
+        py_backup = resolveFilename(SCOPE_LIBDIR, "enigma2/python/Screens/VirtualKeyBoard_backup.py")
+        pyo_image = resolveFilename(SCOPE_LIBDIR, "enigma2/python/Screens/VirtualKeyBoard.pyo")
+        pyo_backup = resolveFilename(SCOPE_LIBDIR, "enigma2/python/Screens/VirtualKeyBoard_backup.pyo")
+        pyo_NewVirtualKeyBoard = resolveFilename(SCOPE_LIBDIR, "enigma2/python/Plugins/SystemPlugins/NewVirtualKeyBoard/VirtualKeyBoard.pyo")
         if not config.NewVirtualKeyBoard.textinput.value == self.currKeyoboard :
            if config.NewVirtualKeyBoard.textinput.value == "NewVirtualKeyBoard":
                if not os.path.islink(pyo_link):
