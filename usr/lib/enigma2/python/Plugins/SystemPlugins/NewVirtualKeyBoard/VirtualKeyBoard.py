@@ -28,12 +28,23 @@ config.NewVirtualKeyBoard.firsttime = ConfigYesNo(default=True)
 config.NewVirtualKeyBoard.textinput = ConfigSelection(default='VirtualKeyBoard', choices=[('VirtualKeyBoard', _('Image virtual keyboard')), ('NewVirtualKeyBoard', _('New Virtual Keyboard'))])
 config.NewVirtualKeyBoard.showsuggestion = ConfigYesNo(default=True)
 
-reswidth = getDesktop(0).size().width()
-resheight = getDesktop(0).size().height()
-if reswidth == 1920:
+def getDesktopSize():
+	s = getDesktop(0).size()
+	return (s.width(), s.height())
+
+def isHD():
+	desktopSize = getDesktopSize()
+	return desktopSize[0] == 1280
+
+def isFHD():
+	desktopSize = getDesktopSize()
+	return desktopSize[0] == 1920
+
+if isFHD():
     skin_xml = '/usr/share/enigma2/NewVirtualKeyBoard/NewVirtualKeyBoardfhd.xml'
 else:
     skin_xml = '/usr/share/enigma2/NewVirtualKeyBoard/NewVirtualKeyBoard.xml'
+
 if os.path.exists(skin_xml):
     loadSkin(skin_xml)
     pass
@@ -69,6 +80,7 @@ def downloadFile(url,target):
     except:
         print "language download error"
         return False
+
 def iconsDir(file=''):
     return '/usr/share/enigma2/NewVirtualKeyBoard/icons/' + file
 
@@ -79,7 +91,7 @@ class languageSelectionList(GUIComponent, object):
         self.l = eListboxPythonMultiContent()
         self.l.setBuildFunc(self.buildEntry)
         self.onSelectionChanged = []
-        if getDesktop(0).size().width() == 1920:
+        if isFHD():
             fontSize = 32
             itemHeight = 54
         else:
@@ -582,7 +594,7 @@ class selectList(GUIComponent, object):
         self.l = eListboxPythonMultiContent()
         self.l.setBuildFunc(self.buildEntry)
         self.onSelectionChanged = []
-        if getDesktop(0).size().width() == 1920:
+        if isFHD():
             fontSize = 32
             itemHeight = 54
         else:
@@ -1495,7 +1507,7 @@ class vkOptionsScreen(Screen):
         scolor = cbcolor
         res = []
         menulist = []
-        if reswidth == 1280:
+        if isHD():
             self['menu'].l.setItemHeight(50)
             self['menu'].l.setFont(0, gFont('Regular', 28))
         else:
@@ -1503,12 +1515,12 @@ class vkOptionsScreen(Screen):
             self['menu'].l.setFont(0, gFont('Regular', 42))
         for i in range(0, len(datalist)):
             txt = datalist[i][1]
-            if reswidth == 1280:
+            if isHD():
                 png = os.path.join('/usr/share/enigma2/NewVirtualKeyBoard/icons/menus/hd40/%s.png' % datalist[i][2])
             else:
                 png = os.path.join('/usr/share/enigma2/NewVirtualKeyBoard/icons/menus/fhd75/%s.png' % datalist[i][2])
             res.append(MultiContentEntryText(pos=(0, 1), size=(0, 0), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER | RT_WRAP, text='', color=scolor, color_sel=cccolor, border_width=3, border_color=806544))
-            if reswidth == 1280:
+            if isHD():
                 res.append(MultiContentEntryText(pos=(60, 1), size=(723, 50), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER | RT_WRAP, text=str(txt), color=16777215, color_sel=16777215))
                 res.append(MultiContentEntryPixmapAlphaTest(pos=(5, 5), size=(40, 40), png=loadPNG(png)))
             else:
@@ -1521,28 +1533,28 @@ class vkOptionsScreen(Screen):
 
 class nvKeyboardSetup(ConfigListScreen, Screen):
     swidth=getDesktop(0).size().width()
-    if swidth==1920:
-       skin='''
-<screen name="nvKeyboardSetu" position="center,center" size="1080,540" backgroundColor="#16000000" title="New Virtual Keyboard  Settings">
-<ePixmap position="118,482" size="38,38" pixmap="%s/SystemPlugins/NewVirtualKeyBoard/images/red.png" zPosition="3" transparent="1" alphatest="blend" />
-<ePixmap position="424,482" size="38,38" pixmap="%s/SystemPlugins/NewVirtualKeyBoard/images/green.png" zPosition="3" transparent="1" alphatest="blend" />
-<ePixmap position="724,482" size="38,38" pixmap="%s/SystemPlugins/NewVirtualKeyBoard/images/blue.png" zPosition="3" transparent="1" alphatest="blend" />
-<eLabel position="60,468" zPosition="4" size="300,36" halign="center" font="Regular;33" transparent="1" foregroundColor="#ffffff" backgroundColor="#41000000" text="Cancel" />
-<eLabel position="368,468" zPosition="4" size="300,36" halign="center" font="Regular;33" transparent="1" foregroundColor="#ffffff" backgroundColor="#41000000" text="Save" />
-<eLabel position="735,468" zPosition="4" size="300,36" halign="center" font="Regular;30" transparent="1" foregroundColor="#ffffff" backgroundColor="#41000000" text="Virtual keyboard " />
-<widget name="config" position="30,75" size="1050,480" itemHeight="45" font="Regular;36" scrollbarMode="showOnDemand" transparent="1" zPosition="2" />
-</screen>''' % (resolveFilename(SCOPE_PLUGINS), resolveFilename(SCOPE_PLUGINS), resolveFilename(SCOPE_PLUGINS))
+    if isFHD():
+	skin='''
+	<screen name="nvKeyboardSetu" position="center,center" size="1080,540" backgroundColor="#16000000" title="New Virtual Keyboard  Settings">
+		<ePixmap position="118,482" size="38,38" pixmap="~/images/red.png" zPosition="3" transparent="1" alphatest="blend" />
+		<ePixmap position="424,482" size="38,38" pixmap="~/images/green.png" zPosition="3" transparent="1" alphatest="blend" />
+		<ePixmap position="724,482" size="38,38" pixmap="~/images/blue.png" zPosition="3" transparent="1" alphatest="blend" />
+		<eLabel position="60,468" zPosition="4" size="300,36" halign="center" font="Regular;33" transparent="1" foregroundColor="#ffffff" backgroundColor="#41000000" text="Cancel" />
+		<eLabel position="368,468" zPosition="4" size="300,36" halign="center" font="Regular;33" transparent="1" foregroundColor="#ffffff" backgroundColor="#41000000" text="Save" />
+		<eLabel position="735,468" zPosition="4" size="300,36" halign="center" font="Regular;30" transparent="1" foregroundColor="#ffffff" backgroundColor="#41000000" text="Virtual keyboard " />
+				<widget name="config" position="30,75" size="1050,480" itemHeight="45" font="Regular;36" scrollbarMode="showOnDemand" transparent="1" zPosition="2" />
+	</screen>'''
     else:
-       skin='''
-<screen name="nvKeyboardSetu" position="center,center" size="719,360" backgroundColor="#16000000" title="New Virtual Keyboard  Settings">
-<ePixmap position="79,321" size="25,25" pixmap="%s/SystemPlugins/NewVirtualKeyBoard/images/red.png" zPosition="3" transparent="1" alphatest="blend" />
-<ePixmap position="282,321" size="25,25" pixmap="%s/SystemPlugins/NewVirtualKeyBoard/images/green.png" zPosition="3" transparent="1" alphatest="blend" />
-<ePixmap position="482,321" size="25,25" pixmap="%s/SystemPlugins/NewVirtualKeyBoard/images/blue.png" zPosition="3" transparent="1" alphatest="blend" />
-<eLabel position="40,322" zPosition="4" size="200,24" halign="center" font="Regular;22" transparent="1" foregroundColor="#ffffff" backgroundColor="#41000000" text="Cancel" />
-<eLabel position="245,322" zPosition="4" size="200,24" halign="center" font="Regular;22" transparent="1" foregroundColor="#ffffff" backgroundColor="#41000000" text="Save" />
-<eLabel position="490,322" zPosition="4" size="200,24" halign="center" font="Regular;20" transparent="1" foregroundColor="#ffffff" backgroundColor="#41000000" text="Virtual keyboard " />
-<widget name="config" position="20,50" size="699,320" scrollbarMode="showOnDemand" transparent="1" zPosition="2" />
-</screen>''' % (resolveFilename(SCOPE_PLUGINS), resolveFilename(SCOPE_PLUGINS), resolveFilename(SCOPE_PLUGINS))
+	skin='''
+	<screen name="nvKeyboardSetu" position="center,center" size="719,360" backgroundColor="#16000000" title="New Virtual Keyboard  Settings">
+		<ePixmap position="79,321" size="25,25" pixmap="~/images/red.png" zPosition="3" transparent="1" alphatest="blend" />
+		<ePixmap position="282,321" size="25,25" pixmap="~/images/green.png" zPosition="3" transparent="1" alphatest="blend" />
+		<ePixmap position="482,321" size="25,25" pixmap="~/images/blue.png" zPosition="3" transparent="1" alphatest="blend" />
+		<eLabel position="40,322" zPosition="4" size="200,24" halign="center" font="Regular;22" transparent="1" foregroundColor="#ffffff" backgroundColor="#41000000" text="Cancel" />
+		<eLabel position="245,322" zPosition="4" size="200,24" halign="center" font="Regular;22" transparent="1" foregroundColor="#ffffff" backgroundColor="#41000000" text="Save" />
+		<eLabel position="490,322" zPosition="4" size="200,24" halign="center" font="Regular;20" transparent="1" foregroundColor="#ffffff" backgroundColor="#41000000" text="Virtual keyboard " />
+		<widget name="config" position="20,50" size="699,320" scrollbarMode="showOnDemand" transparent="1" zPosition="2" />
+	</screen>'''
 
     def __init__(self, session,fromkeyboard=False):
         Screen.__init__(self, session)
@@ -1555,6 +1567,7 @@ class nvKeyboardSetup(ConfigListScreen, Screen):
         else:
            config.NewVirtualKeyBoard.textinput.value="NewVirtualKeyBoard"
            config.NewVirtualKeyBoard.textinput.save()
+	self.skin_path = resolveFilename(SCOPE_PLUGINS, "SystemPlugins/NewVirtualKeyBoard")
         self.fromkeyboard=fromkeyboard
         self['config']=MenuList([])
         ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry)
