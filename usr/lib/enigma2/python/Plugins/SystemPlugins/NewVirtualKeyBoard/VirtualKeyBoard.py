@@ -1,5 +1,6 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
+from __future__ import print_function
+#!/usr/bin/python
 import os
 import sys
 from urllib import quote
@@ -49,7 +50,7 @@ if os.path.exists(skin_xml):
     loadSkin(skin_xml)
     pass
 else:
-    print 'skin.xml is not present'
+    print('skin.xml is not present')
 
 vkLayoutDir = '/usr/share/enigma2/NewVirtualKeyBoard/kle/'
 ServerUrl = 'http://tunisia-dreambox.info/TSplugins/NewVirtualKeyBoard/kle/'
@@ -78,7 +79,7 @@ def downloadFile(url,target):
           output.write(response.read())
         return True
     except:
-        print "language download error"
+        print("language download error")
         return False
 
 def iconsDir(file=''):
@@ -484,7 +485,7 @@ class textInputSuggestions:
         return
 
     def dataError(self, error):
-        print 'unable to get suggestion'
+        print('unable to get suggestion')
         self.callback([])
 
     def parseGoogleData(self, output):
@@ -585,7 +586,7 @@ class textInputSuggestions:
                    fi.write(L[line])
             fi.close()
         except:
-            print 'error writing to history'
+            print('error writing to history')
 
 class selectList(GUIComponent, object):
 
@@ -732,7 +733,7 @@ class NewVirtualKeyBoard(Screen, textInputSuggestions, kb_layoutComponent,KBLayo
         self.showHistory=self.showsuggestion
         self.showHistory=self.showsuggestion
         self.googleSuggestionList=[]
-        print "self.showsuggestion",self.showsuggestion
+        print("self.showsuggestion",self.showsuggestion)
         self.skinName = 'NewVirtualKeyBoard'
         Screen.__init__(self, session)
         textInputSuggestions.__init__(self, callback=self.setGoogleSuggestions)
@@ -1579,7 +1580,7 @@ class nvKeyboardSetup(ConfigListScreen, Screen):
     def changedEntry(self):
             cur = self['config'].list[0]
             curval=cur[1].value
-            print "curval",curval
+            print("curval",curval)
             if 'NewVirtualKeyBoard' ==curval:
                 self.createConfigList(True)
             else:
