@@ -430,7 +430,7 @@ def mkdirs(newdir, raiseException=False):
             if tail:
                 os.mkdir(newdir)
         return True
-    except Exception, e:
+    except Exception as e:
         if raiseException:
             raise e
     return False
