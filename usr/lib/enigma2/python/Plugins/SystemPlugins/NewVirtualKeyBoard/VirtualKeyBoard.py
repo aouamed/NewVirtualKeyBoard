@@ -1,6 +1,6 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-#!/usr/bin/python
 import os
 import sys
 from urllib import quote
